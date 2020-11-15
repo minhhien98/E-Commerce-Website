@@ -1,0 +1,25 @@
+﻿@model IEnumerable<DomainModel.Entity.Product>
+
+@{
+    ViewBag.Title = "RandomProductsByCategory";
+}
+
+@foreach (var item in Model.Take(3))
+{
+    <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card h-100">
+            <a href="@Url.Action("ProductDetail","Product", new {item.ProductId })"><img class="card-img-top" src="~/Content/Image/Product/@item.ProductImage" alt="" @*width="700" height="400"*@></a>
+            <div class="card-body">
+                <h4 class="card-title">
+                    <a href="#">@item.ProductName</a>   
+                </h4>
+                <h5>@item.ProductPrice đ</h5>
+                <p class="card-text">@item.ProductDescription</p>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+            </div>
+        </div>
+    </div>
+}
+

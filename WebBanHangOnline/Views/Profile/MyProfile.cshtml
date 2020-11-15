@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "MyProfile";
+    //var user = HttpContext.Current.GetOwinContext().Authentication.User.FindFirst(System.IdentityModel.Claims.ClaimTypes.Name).Value;
+    var user = User.Identity.Name;
+}
+@using (Html.BeginForm("Logout", "Authentication", FormMethod.Get, new { id = "logoutForm", @class = "form-inline ml-2" }))
+{
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@user</a>           
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="@Url.Action("ChangePassword","User")">Change Password</a>
+                @if (User.IsInRole("Admin"))
+                {
+                   <a class="dropdown-item" href="#">Admin</a>
+                }
+            </div>
+        </li>
+        <li class="nav-item ml-2">
+            <a href="javascript:document.getElementById('logoutForm').submit()" class="btn btn-light"><span class="glyphicon glyphicon-user"></span>Log off</a>
+        </li>
+    </ul>
+}
+
+@*@using (Html.BeginForm("Logout", "Authentication", FormMethod.Get, new { id = "logoutForm", @class = "form-inline ml-2" }))
+{
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@usersession</a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="@Url.Action("ChangePassword","User")">Change Password</a>
+            </div>
+        </li>
+        <li class="nav-item ml-2">
+            <a href="javascript:document.getElementById('logoutForm').submit()" class="btn btn-light"><span class="glyphicon glyphicon-user"></span>Log off</a>
+        </li>
+    </ul>
+}*@
+
+
+

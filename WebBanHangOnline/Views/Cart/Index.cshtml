@@ -1,0 +1,132 @@
+﻿@using WebBanHangOnline.Models.Common;
+@{
+    ViewBag.Title = "Index";
+}
+
+<section class="jumbotron text-center">
+    <div class="container">
+        <h1 class="jumbotron-heading">E-COMMERCE CART</h1>
+    </div>
+</section>
+<div class="container mb-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col"> </th>
+                            <th scope="col">Product</th>
+                            <th scope="col">Available</th>
+                            <th scope="col" class="text-center">Quantity</th>
+                            <th scope="col" class="text-right">Price</th>
+                            <th> </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (Cart item in (List<Cart>)Session["Cart"])
+                        {
+                            <tr>
+                                <td><img src="~/Content/Image/Product/@item.product.ProductImage" width="50" height="50" /> </td>
+                                <td>@item.product.ProductName</td>
+                                <td>In stock</td>
+                                <td>
+                                    @*<button class="btn btn-light">+</button>*@
+                                    <input id="@item.product.ProductId" type="number" class="form-control text-center" value="@item.Quantity" onchange="Update_Quantity(@item.product.ProductId)">
+                                    @*<button class="btn btn-light">-</button>*@
+                                </td>
+                                <td class="text-right">@item.product.ProductPrice</td>
+                                <td class="text-right"><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RemoveFromCart", "Cart", new { id = @item.product.ProductId })'"><i class="fa fa-trash"></i> </button> </td>
+                            </tr>
+                        }
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>Sub-Total</td>
+                            <td id="subtotal" class="text-right">
+                                @{
+                                    List<Cart> list = (List<Cart>)Session["cart"];
+                                    var total = list.Sum(item => item.product.ProductPrice * item.Quantity);
+                                }
+                                @total
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>Shipping</td>
+                            <td id="shipping" class="text-right">
+                                @{
+                                    var Shipping = total * 2 / 100;
+                                }
+                                @Shipping
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><strong>Total</strong></td>
+                            <td id="total" class="text-right"><strong>@(total + Shipping)</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col mb-2">
+            <div class="row">
+                <div class="col-sm-12  col-md-6">
+                    <a class="btn btn-block btn-light" href="@Url.Action("Index", "Home")">Continue Shopping</a>
+                </div>
+                <div class="col-sm-12 col-md-6 text-right">
+                    @using (Html.BeginForm("Checkout", "Cart"))
+                    {
+                        <button class="btn btn-lg btn-block btn-success text-uppercase">Checkout</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function Update_Quantity(id)
+    {
+        var quantity = document.getElementById(id).value;
+        $.ajax({
+            url: '@Url.Action("UpdateQuantity", "Cart")',
+            type: "GET",
+            data:
+            {
+                id: id,
+                quantity: quantity
+            },
+            success: function () {
+                $("#subtotal").load(" #subtotal");
+                $("#shipping").load(" #shipping");
+                $("#total").load(" #total");
+                var flag = '<%=Session["Cart"] == null%>';
+                if (flag.toLowerCase() == "false") {// some code
+                    location.reload(true);
+                }
+            },
+            error: function () {
+                alert("Something failed");
+            }
+        });
+    }
+    @*function Update_Quantity(id) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("GET", "@Url.Action("AddToCart","Cart")", true);
+        xhttp.onreadystatechange = function () {
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
+                alert(xhttp.responseText);
+            }
+        }
+        xhttp.send();
+    }*@
+</script>

@@ -1,0 +1,66 @@
+﻿@model WebBanHangOnline.Models.Authentication.LoginViewModel
+@{
+    ViewBag.Title = "Login";
+}
+<div class="d-flex h-100">
+    <div class="m-auto">
+        @using (Html.BeginForm("Login", "Authentication"@*, new { @class = "form-horizontal" }*@))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                <h2>Login</h2>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(u => u.UserName, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(u => u.UserName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(u => u.UserName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(u => u.Password, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.PasswordFor(u => u.Password, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(u => u.Password, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    @Html.CheckBoxFor(u => u.RememberMe)
+                    @Html.LabelFor(u => u.RememberMe, "Remember Me")
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <button type="submit" class="btn btn-primary">Log in</button>
+                    <a href="@Url.Action("Index","Home")" class="btn btn-default">Cancel</a>
+                </div>
+            </div>
+            @*<div id="LoginForm" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header text-center">
+                            <h4 class="modal-title">Log in</h4>
+                            <button class="close" data-dissmiss="modal" aria-hidden="true">
+                                <span>&times;</span>
+                            </button>
+                        </div>
+                        @Html.ValidationSummary(false, "", "error")
+                        <div class="modal-body">
+                            @Html.LabelFor(u => u.UserName)
+                            @Html.TextBoxFor(u => u.UserName, new { @class = "form-control" })
+                            @Html.LabelFor(u => u.Password)
+                            @Html.TextBoxFor(u => u.Password, new { @class = "form-control", @type = "password" })
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" value="Log in" class="btn btn-primary">Log in</button>
+                            <button class="btn btn-primary" data-dissmiss="modal">Exit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+        }
+    </div>
+</div>
